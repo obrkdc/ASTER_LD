@@ -1,6 +1,7 @@
 # ASTER_LD
  
 **1	ASTER LD OVERVIEW**
+
 ASTER Lithological Discrimination (ASTER LD) allows users to quickly produce a range of  composite false colour images highlighting differences between rock types for use in geological mapping.  
 ASTER LD reads Advanced Spaceborne Thermal Emission and Reflection Radiometer (ASTER) multispectral image Hierarchical Data Format (.hdf) files and processes the visible near-infrared (VNIR) and short-wave infrared (SWIR) bands to output false colour composites including principal component analysis (PCA) images suitable for lithological discrimination.
 ASTER LD can process and merge data from multiple overlapping ASTER scenes, the main steps are summarised as:
@@ -13,6 +14,7 @@ All output images are in georeferenced tagged image file format (GeoTiff, .tif) 
 In addition to the TOA reflectance conversion tool, ASTER LD utilises a number of functions from the WhiteboxTools module and acknowledges their author Dr John Lindsay, (Lindsay, 2020).
 
 **2	INSTALLATION AND SETUP**
+
 ASTER LD was tested in Python 3.8 on Windows 10 operating system, in an Anaconda environment with the following Python packages/modules:
 •	glob, os, datetime, sys, getopt, re
 •	rasterio 1.2.3
@@ -22,6 +24,7 @@ ASTER LD was tested in Python 3.8 on Windows 10 operating system, in an Anaconda
 •	whiteboxtools 1.4.0
 
 **2.1	Setup Requirements**
+
 •	Create a folder with the following or operating system (OS) comparable directory path “C:\SRS_Processing_Data”. 
 •	Copy ASTER Level 1 Precision Terrain Corrected Registered At-Sensor Radiance (AST_L1T)  scene files in HDF4_EOS (.hdf) format for processing into this folder. 
 o	Multiple scenes should overlap by at least 100 pixels (3 km).
@@ -34,6 +37,7 @@ o	Load the Python modules/packages listed above into a working environment or in
 o	Start python and run the ASTER_LD.py file within the working environment/ command prompt.
  
 **3	OUTPUTS**
+
 Output files produced by ASTER LD are listed in Table 3 1. Note: output files total size are approximately ~6 Gb per input scene, depending on scene overlap.
 Table 3 1:	Output File Nomenclature
 File Name Format	Details
