@@ -1,6 +1,7 @@
 # Add in modules
 import glob
 import sys
+import rasterio as rio
 from tkinter import Tcl
 import os
 from WBT.whitebox_tools import WhiteboxTools
@@ -279,10 +280,19 @@ sys.exit()
 
 # Next developments:------------------------------------------------------------------------------------------------
 
-"""# PCA on SWIR bands only
+# PCA on SWIR bands only
 os.mkdir(os.path.join("/SRS_Processing_Data", 'Output', 'PCA_SWIR'))
 
-wbt.work_dir = os.path.join("/SRS_Processing_Data", 'Output', 'PCA_SWIR')
+def PC_Rename (outputFilename):
+    for i in range(10):
+        PCA_component_list = glob.glob(os.path.join(output_scene_path,"PCA_component" + str(i) + '.tif'))
+        for f in SWIR_band_list:
+            in_file_name = f
+            os.rename(in_file_name, {outputFilename})
+
+PC_Rename('PC' + str(i) + '_VNIR_SWIR.tif')
+
+
 
 #NEED to copy across the PCA input files into the new folder for this to work or rename the PCA output files before doing the second PCA so they are not overwritten.
 
@@ -295,7 +305,7 @@ wbt.principal_component_analysis(
    standardized=False
 )
 
-wbt.work_dir = os.path.join("/SRS_Processing_Data", 'Output')"""
+wbt.work_dir = os.path.join("/SRS_Processing_Data", 'Output')
 
 #Balance Contrast Enhancement to reduce colour bias in a colour composite image based on Liu (1991)
 # Enhancement of colour composite images, direct decorrelation stretch
