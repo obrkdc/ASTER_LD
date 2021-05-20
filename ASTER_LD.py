@@ -37,25 +37,24 @@ for filename in file_list:
        os.remove(filename)
 
 # ------------------------------------------------------------------------------------------------------------------
-#Prepare Image Files into groups and merge band images
-im_group_b = [0]*10
-for i in range(1,10):
-    im_group_b[i] = glob.glob(os.path.join(output_scene_path, '*ImageData' + str(i) + '*_reflectance.tif'))
-    Tcl().call('lsort', '-dict', im_group_b[i]) #Sort Images in List
-    print(im_group_b[i])
+scene_count = len(glob.glob1(scene_path,"*.hdf"))
+print('--------------------------------')
+print('--------------------------------')
+print('Number of scenes in input folder =' + str(scene_count))
 
+# Merge band groups function
 def mosaic_bands(i):
     x = 0
-    if (x+1) < len(im_group_b[i]):
+    if (x + 1) < len(im_group_b[i]):
         wbt.mosaic_with_feathering(
             im_group_b[i][x],
-            im_group_b[i][x+1],
-            os.path.join(output_scene_path, 'im_group_b' + str(i) + 'image1-' + str(x+2) + '.tif'),
+            im_group_b[i][x + 1],
+            os.path.join(output_scene_path, 'im_group_b' + str(i) + 'image1-' + str(x + 2) + '.tif'),
             method="cc",
             weight=4.0,
             callback=my_callback)
         x = x + 1
-        while (x+1) < len(im_group_b[i]):
+        while (x + 1) < len(im_group_b[i]):
             wbt.mosaic_with_feathering(
                 im_group_b[i][x + 1],
                 os.path.join(output_scene_path, 'im_group_b' + str(i) + 'image1-' + str(x + 1) + '.tif'),
@@ -65,13 +64,22 @@ def mosaic_bands(i):
                 callback=my_callback)
             x = x + 1
 
-for i in range(1,10):
-    mosaic_bands(i)
+#Prepare Image Files into groups and merge band images for more than 1 hdf file input, for 1 hdf file input rename files
+if scene_count > 1:
+    im_group_b = [0]*10
+    for i in range(1,10):
+        im_group_b[i] = glob.glob(os.path.join(output_scene_path, '*ImageData' + str(i) + '*_reflectance.tif'))
+        Tcl().call('lsort', '-dict', im_group_b[i]) #Sort Images in List
+        print(im_group_b[i])
+    for i in range(1,10):
+        mosaic_bands(i)
+elif scene_count == 1:
+    band_list = glob.glob(os.path.join(output_scene_path, '*reflectance.tif'))
+    band_list.sort()
+    for index, file in enumerate(band_list):
+        os.rename(file, (os.path.join(output_scene_path, 'im_group_b' + str(index + 1) + 'image1-1.tif')))
 
-scene_count = len(glob.glob1(scene_path,"*.hdf"))
-print('--------------------------------')
-print('--------------------------------')
-print('Number of scenes in input folder =' + str(scene_count))
+
 
 #Clean up mosaic files in folder, delete those not needed
 full_mosaic_file_list = glob.glob(os.path.join(output_scene_path, 'im_group_b*image1-' + str(scene_count) + '.tif'))
